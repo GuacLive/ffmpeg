@@ -97,8 +97,8 @@ RUN mkdir -p /dist && cd /dist && \
   sed -i "/-DEXTRA_LIB/ s/$/ -DCMAKE_INSTALL_SRC=\${SRC}/" multilib.sh && \
   sed -i "/^cmake/ s/$/ -DENABLE_CLI=OFF/" multilib.sh && \
   ./multilib.sh && \
-  make -j$(nproc) -C 8bit install && \
-  rm -rf ${DIR}
+  make -j$(nproc) -C 8bit && \
+  make install
 
 # install opus
 RUN mkdir -p /dist && cd /dist && \
