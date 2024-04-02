@@ -237,8 +237,8 @@ RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/ffmpeg.conf && \
   apt-get install -y \
   v4l-utils \
   fbset \
-  libx265 \
-  libssl \
+  x265 \
+  libssl3 \
   libva-drm2 \
   libva2 \
   zlib1g \
