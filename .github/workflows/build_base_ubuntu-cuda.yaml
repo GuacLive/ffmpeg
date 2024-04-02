@@ -15,14 +15,7 @@ jobs:
 
       - uses: cardinalby/export-env-action@v2
         with:
-          envFile: "Build.ubuntu.env"
-          export: "true"
-          expandWithJobEnv: "true"
-          expand: "true"
-
-      - uses: cardinalby/export-env-action@v2
-        with:
-          envFile: "Build.ubuntu.cuda.env"
+          envFile: "Build.ubuntu.env|Build.ubuntu.cuda.env"
           export: "true"
           expandWithJobEnv: "true"
           expand: "true"
