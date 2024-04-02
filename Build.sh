@@ -127,6 +127,7 @@ function build_vaapi() {
     --load \
     --progress=plain \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
+    --build-arg DEPLOY_IMAGE=$OS_NAME:$OS_VERSION \
     --build-arg FREETYPE_VERSION=$FREETYPE_VERSION \
     --build-arg XML2_VERSION=$XML2_VERSION \
     --build-arg SRT_VERSION=$SRT_VERSION \

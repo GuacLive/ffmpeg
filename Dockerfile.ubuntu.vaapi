@@ -26,7 +26,6 @@ RUN apt-get update -y && \
   pkg-config \
   curl \
   git \
-  nasm \
   openssl \
   libssl-dev \
   cmake \
@@ -42,6 +41,29 @@ RUN apt-get update -y && \
   libasound2-dev \
   rust-all \
   meson
+
+# install nasm
+RUN mkdir -p /dist && cd /dist && \
+  curl -OLk https://www.nasm.us/pub/nasm/releasebuilds/2.14.01/nasm-2.14.01.tar.gz && \
+  tar xfvz nasm-2.14.01.tar.gz && \
+  rm nasm-2.14.01.tar.gz && \
+  cd nasm-2.14.01 \
+  ./autogen.sh && \
+  ./configure && \
+  make -j$(nproc) && \
+  make install
+
+# install x265
+RUN mkdir -p /dist && cd /dist && \
+  curl -OLk https://bitbucket.org/multicoreware/x265_git/downloads/x265_${X265_VERSION}.tar.gz && \
+  tar xfvz x265_${X265_VERSION}.tar.gz && \
+  rm x265_${X265_VERSION}.tar.gz && \
+  cd x265_${X265_VERSION}/build/linux \
+  sed -i "/-DEXTRA_LIB/ s/$/ -DCMAKE_INSTALL_SRC=\${SRC}/" multilib.sh && \
+  sed -i "/^cmake/ s/$/ -DENABLE_CLI=OFF/" multilib.sh && \
+  ./multilib.sh && \
+  make -j$(nproc) -C 8bit && \
+  make install
 
 # install libxml2
 RUN mkdir -p /dist && cd /dist && \
@@ -86,18 +108,6 @@ RUN mkdir -p /dist && cd /dist && \
   --bindir="${SRC}/bin" \
   --enable-shared && \
   make -j$(nproc) && \
-  make install
-
-# install x265
-RUN mkdir -p /dist && cd /dist && \
-  curl -OLk https://bitbucket.org/multicoreware/x265_git/downloads/x265_${X265_VERSION}.tar.gz && \
-  tar xfvz x265_${X265_VERSION}.tar.gz && \
-  rm x265_${X265_VERSION}.tar.gz && \
-  cd x265_${X265_VERSION}/build/linux \
-  sed -i "/-DEXTRA_LIB/ s/$/ -DCMAKE_INSTALL_SRC=\${SRC}/" multilib.sh && \
-  sed -i "/^cmake/ s/$/ -DENABLE_CLI=OFF/" multilib.sh && \
-  ./multilib.sh && \
-  make -j$(nproc) -C 8bit && \
   make install
 
 # install opus
