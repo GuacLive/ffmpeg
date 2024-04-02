@@ -60,6 +60,7 @@ jobs:
             VPX_VERSION=${{ env.VPX_VERSION }}
             LAME_VERSION=${{ env.LAME_VERSION }}
             OPUS_VERSION=${{ env.OPUS_VERSION }}
+            OGG_VERSION=${{ env.OGG_VERSION }}
             VORBIS_VERSION=${{ env.VORBIS_VERSION }}
             DAV1D_VERSION=${{ env.DAV1D_VERSION }}
             RAV1E_VERSION=${{ env.RAV1E_VERSION }}
