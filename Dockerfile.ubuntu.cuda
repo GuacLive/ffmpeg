@@ -36,10 +36,21 @@ RUN apt-get update -y && \
   build-essential \
   libtool \
   autoconf \
+  libx265-dev \
   libv4l-dev \
   libasound2-dev \
   rust-all \
-  meson
+  meson \
+  zlib1g-dev
+
+# install librav1e
+RUN mkdir -p /dist && cd /dist && \
+  curl -OLk https://github.com/xiph/rav1e/archive/refs/tags/v${RAV1E_VERSION}.tar.gz && \
+  tar xfvz v${RAV1E_VERSION}.tar.gz && \
+  rm v${RAV1E_VERSION}.tar.gz && \
+  cd rav1e-${RAV1E_VERSION} && \
+  cargo install cargo-c && \
+  cargo cinstall --release
 
 # install libxml2
 RUN mkdir -p /dist && cd /dist && \
@@ -64,15 +75,6 @@ RUN mkdir -p /dist && cd /dist && \
   meson setup .. && \
   ninja && ninja install
 
-# install librav1e
-RUN mkdir -p /dist && cd /dist && \
-  curl -OLk https://github.com/xiph/rav1e/archive/refs/tags/v${RAV1E_VERSION}.tar.gz && \
-  tar xfvz v${RAV1E_VERSION}.tar.gz && \
-  rm v${RAV1E_VERSION}.tar.gz && \
-  cd rav1e-${RAV1E_VERSION} && \
-  cargo install cargo-c && \
-  cargo cinstall --release
-
 # install x264
 RUN mkdir -p /dist && cd /dist && \
   curl -OLk https://code.videolan.org/videolan/x264/-/archive/stable/x264-${X264_VERSION}.tar.gz && \
@@ -84,18 +86,6 @@ RUN mkdir -p /dist && cd /dist && \
   --bindir="${SRC}/bin" \
   --enable-shared && \
   make -j$(nproc) && \
-  make install
-
-# install x265
-RUN mkdir -p /dist && cd /dist && \
-  curl -OLk https://bitbucket.org/multicoreware/x265_git/downloads/x265_${X265_VERSION}.tar.gz && \
-  tar xfvz x265_${X265_VERSION}.tar.gz && \
-  rm x265_${X265_VERSION}.tar.gz && \
-  cd x265_${X265_VERSION}/build/linux \
-  sed -i "/-DEXTRA_LIB/ s/$/ -DCMAKE_INSTALL_SRC=\${SRC}/" multilib.sh && \
-  sed -i "/^cmake/ s/$/ -DENABLE_CLI=OFF/" multilib.sh && \
-  ./multilib.sh && \
-  make -j$(nproc) -C 8bit && \
   make install
 
 # install opus
@@ -254,6 +244,8 @@ RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/ffmpeg.conf && \
   apt-get install -y \
   v4l-utils \
   fbset \
+  x265 \
+  zlib1g \
   libasound2-dev && \
   ffmpeg -buildconf
 
