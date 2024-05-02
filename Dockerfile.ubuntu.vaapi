@@ -39,11 +39,14 @@ RUN apt-get update -y && \
   libva-drm2 \
   libva2 \
   libva-dev \
-  i965-va-driver \
+  i965-va-driver-shaders \
+  intel-media-va-driver-non-free \
   libasound2-dev \
-  rust-all \
   meson \
   zlib1g-dev
+
+# install rust
+RUN curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh -s -- -y
 
 # install librav1e
 RUN mkdir -p /dist && cd /dist && \
@@ -51,8 +54,8 @@ RUN mkdir -p /dist && cd /dist && \
   tar xfvz v${RAV1E_VERSION}.tar.gz && \
   rm v${RAV1E_VERSION}.tar.gz && \
   cd rav1e-${RAV1E_VERSION} && \
-  cargo install cargo-c && \
-  cargo cinstall --release
+  /root/.cargo/bin/cargo install cargo-c && \
+  /root/.cargo/bin/cargo cinstall --release
 
 # install libxml2
 RUN mkdir -p /dist && cd /dist && \
@@ -242,7 +245,8 @@ RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/ffmpeg.conf && \
   libva-drm2 \
   libva2 \
   zlib1g \
-  i965-va-driver \
+  i965-va-driver-shaders \
+  intel-media-va-driver-non-free \
   libasound2-dev && \
   ffmpeg -buildconf
 
