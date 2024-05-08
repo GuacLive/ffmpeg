@@ -6,6 +6,11 @@ on:
     branches-ignore:
       - "**"
 
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  ORG_NAME: ${{ github.repository_owner }}
+
 jobs:
   docker:
     runs-on: ubuntu-latest
