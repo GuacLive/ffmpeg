@@ -78,6 +78,7 @@ COPY ./contrib /contrib
 RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   patch -p1 < /contrib/ffmpeg-jsonstats.patch && \
   patch -p1 < /contrib/ffmpeg-hls.patch && \
+  patch -p1 < /contrib/ffmpeg-non-standard-hevc-over-flv.patch && \
   ./configure \
   --extra-version=datarhei \
   --prefix="${SRC}" \

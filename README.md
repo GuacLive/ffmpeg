@@ -35,12 +35,12 @@ _Additional informations can be found in the Dockerfiles._
 
 | Dockerimage                                        | OS           | Plattform                                | GPU                                         |
 | -------------------------------------------------- | ------------ | ---------------------------------------- | ------------------------------------------- |
-| docker.io/datarhei/base:alpine-ffmpeg-latest       | Alpine 3.16  | linux/amd64, linux/arm64, linux/arm/v7   | -                                           |
-| docker.io/datarhei/base:alpine-ffmpeg-rpi-latest   | Alpine 3.16  | Raspberry Pi (linux/arm/v7, linux/arm64) | MMAL/OMX/V4L2-M2M (32bit), V4L2-M2M (64bit) |
-| docker.io/datarhei/base:ubuntu-ffmpeg-cuda-latest  | Ubuntu 20.04 | linux/amd64                              | Nvidia Cuda                                 |
-| docker.io/datarhei/base:ubuntu-ffmpeg-vaapi-latest | Ubuntu 20.04 | linux/amd64                              | Intel VAAPI                                 |
+| docker.io/GuacLive/ffmpeg:alpine-ffmpeg-latest       | Alpine 3.16  | linux/amd64, linux/arm64, linux/arm/v7   | -                                           |
+| docker.io/GuacLive/ffmpeg:alpine-ffmpeg-rpi-latest   | Alpine 3.16  | Raspberry Pi (linux/arm/v7, linux/arm64) | MMAL/OMX/V4L2-M2M (32bit), V4L2-M2M (64bit) |
+| docker.io/GuacLive/ffmpeg:ubuntu-ffmpeg-cuda-latest  | Ubuntu 20.04 | linux/amd64                              | Nvidia Cuda                                 |
+| docker.io/GuacLive/ffmpeg:ubuntu-ffmpeg-vaapi-latest | Ubuntu 20.04 | linux/amd64                              | Intel VAAPI                                 |
 
-More tags: https://hub.docker.com/repository/docker/datarhei/base/general
+More tags: https://hub.docker.com/repository/docker/GuacLive/ffmpeg/general
 
 ## Build & test
 
