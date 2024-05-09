@@ -83,8 +83,8 @@ RUN echo $uname
 RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   apkArch="$(apk --print-arch)" && if [ $apkArch != "aarch64" ]; then MMAL_SUPPORT="--enable-mmal"; fi && \
   apkArch="$(apk --print-arch)" && if [ $apkArch != "aarch64" ]; then OMX_SUPPORT="--enable-omx --enable-omx-rpi"; fi && \
-  patch -p1 < /contrib/ffmpeg-jsonstats.patch && \
-  patch -p1 < /contrib/ffmpeg-hls.patch && \
+  #patch -p1 < /contrib/ffmpeg-jsonstats.patch && \
+  #patch -p1 < /contrib/ffmpeg-hls.patch && \
   patch -p1 < /contrib/ffmpeg-mmal.patch && \
   patch -p1 < /contrib/ffmpeg-non-standard-hevc-over-flv.patch && \
   ./configure \
