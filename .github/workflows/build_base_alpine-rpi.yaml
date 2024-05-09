@@ -69,5 +69,5 @@ jobs:
           platforms: linux/arm64, linux/arm/v7
           push: true
           tags: |
-            GuacLive/ffmpeg:${{ env.OS_NAME }}-ffmpeg-rpi-${{ env.OS_VERSION }}-${{ env.FFMPEG_VERSION }}
-            GuacLive/ffmpeg:ffmpeg${{ env.FFMPEG_VERSION }}-rpi-${{ env.OS_NAME }}${{ env.OS_VERSION }}
+            guaclive/ffmpeg:${{ env.OS_NAME }}-ffmpeg-rpi-${{ env.OS_VERSION }}-${{ env.FFMPEG_VERSION }}
+            guaclive/ffmpeg:ffmpeg${{ env.FFMPEG_VERSION }}-rpi-${{ env.OS_NAME }}${{ env.OS_VERSION }}

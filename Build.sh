@@ -3,14 +3,14 @@
 set -au
 
 function source_env() {
-  env=${1:-.env}
-  [ ! -f "${env}" ] && { echo "Env file ${env} doesn't exist"; return 1; }
-  eval $(sed -e '/^\s*$/d' -e '/^\s*#/d' -e 's/=/="/' -e 's/$/"/' -e 's/^/export /' "${env}")
+    env=${1:-.env}
+    [ ! -f "${env}" ] && { echo "Env file ${env} doesn't exist"; return 1; }
+    eval $(sed -e '/^\s*$/d' -e '/^\s*#/d' -e 's/=/="/' -e 's/$/"/' -e 's/^/export /' "${env}")
 }
 
 function build_default_native() {
-  source_env ./Build.alpine.env
-  docker build \
+    source_env ./Build.alpine.env
+    docker build \
     --progress=plain \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
     --build-arg FREETYPE_VERSION=$FREETYPE_VERSION \
@@ -29,16 +29,16 @@ function build_default_native() {
     --build-arg FBDEV_VERSION=$FBDEV_VERSION \
     --build-arg FFMPEG_VERSION=$FFMPEG_VERSION \
     -f Dockerfile.alpine \
-    -t GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} .
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-$OS_VERSION-$FFMPEG_VERSION
+    -t guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} .
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-$OS_VERSION-$FFMPEG_VERSION
 }
 
 function build_default() {
-  source_env ./Build.alpine.env
-  # "--load" does not support multiple platforms
-  # use "--push" to publish
-  # --platform linux/amd64,linux/arm64,linux/arm/v7
-  docker buildx build \
+    source_env ./Build.alpine.env
+    # "--load" does not support multiple platforms
+    # use "--push" to publish
+    # --platform linux/amd64,linux/arm64,linux/arm/v7
+    docker buildx build \
     --load \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
     --build-arg FREETYPE_VERSION=$FREETYPE_VERSION \
@@ -58,18 +58,18 @@ function build_default() {
     --build-arg FFMPEG_VERSION=$FFMPEG_VERSION \
     --platform linux/amd64 \
     -f Dockerfile.alpine \
-    -t GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} .
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-$OS_VERSION-$FFMPEG_VERSION
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-latest
+    -t guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} .
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-$OS_VERSION-$FFMPEG_VERSION
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-latest
 }
 
 function build_rpi() {
-  source_env ./Build.alpine.env
-  source_env ./Build.alpine.rpi.env
-  # "--load" does not support multiple platforms
-  # use "--push" to publish
-  # --platform linux/arm64,linux/arm/v7
-  docker buildx build \
+    source_env ./Build.alpine.env
+    source_env ./Build.alpine.rpi.env
+    # "--load" does not support multiple platforms
+    # use "--push" to publish
+    # --platform linux/arm64,linux/arm/v7
+    docker buildx build \
     --load \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
     --build-arg FREETYPE_VERSION=$FREETYPE_VERSION \
@@ -90,15 +90,15 @@ function build_rpi() {
     --build-arg FBDEV_VERSION=$FBDEV_VERSION \
     --platform linux/arm64 \
     -f Dockerfile.alpine.rpi \
-    -t GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-rpi-${OS_NAME}${OS_VERSION} .
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-rpi-${OS_NAME}${OS_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-rpi-$OS_VERSION-$FFMPEG_VERSION
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-rpi-${OS_NAME}${OS_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-rpi-latest
+    -t guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-rpi-${OS_NAME}${OS_VERSION} .
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-rpi-${OS_NAME}${OS_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-rpi-$OS_VERSION-$FFMPEG_VERSION
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-rpi-${OS_NAME}${OS_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-rpi-latest
 }
 
 function build_cuda() {
-  source_env ./Build.ubuntu.env
-  source_env ./Build.ubuntu.cuda.env
-  docker buildx build \
+    source_env ./Build.ubuntu.env
+    source_env ./Build.ubuntu.cuda.env
+    docker buildx build \
     --load \
     --build-arg BUILD_IMAGE=nvidia/cuda:$CUDA_VERSION-devel-$OS_NAME$OS_VERSION \
     --build-arg DEPLOY_IMAGE=nvidia/cuda:$CUDA_VERSION-runtime-$OS_NAME$OS_VERSION \
@@ -115,15 +115,15 @@ function build_cuda() {
     --build-arg FFMPEG_VERSION=$FFMPEG_VERSION \
     --platform linux/amd64 \
     -f Dockerfile.ubuntu.cuda \
-    -t GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-cuda-${OS_NAME}${OS_VERSION}-cuda${CUDA_VERSION} .
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-cuda-${OS_NAME}${OS_VERSION}-cuda${CUDA_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-cuda-$OS_VERSION-$FFMPEG_VERSION-$CUDA_VERSION
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-cuda-${OS_NAME}${OS_VERSION}-cuda${CUDA_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-cuda-latest
+    -t guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-cuda-${OS_NAME}${OS_VERSION}-cuda${CUDA_VERSION} .
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-cuda-${OS_NAME}${OS_VERSION}-cuda${CUDA_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-cuda-$OS_VERSION-$FFMPEG_VERSION-$CUDA_VERSION
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-cuda-${OS_NAME}${OS_VERSION}-cuda${CUDA_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-cuda-latest
 }
 
 function build_vaapi() {
-  source_env ./Build.ubuntu.env
-  source_env ./Build.ubuntu.vaapi.env
-  docker buildx build \
+    source_env ./Build.ubuntu.env
+    source_env ./Build.ubuntu.vaapi.env
+    docker buildx build \
     --load \
     --progress=plain \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
@@ -142,28 +142,28 @@ function build_vaapi() {
     --build-arg FFMPEG_VERSION=$FFMPEG_VERSION \
     --platform linux/amd64 \
     -f Dockerfile.ubuntu.vaapi \
-    -t GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-vaapi-${OS_NAME}${OS_VERSION} .
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-vaapi-${OS_NAME}${OS_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-vaapi-$OS_VERSION-$FFMPEG_VERSION
-  docker tag GuacLive/ffmpeg:ffmpeg${FFMPEG_VERSION}-vaapi-${OS_NAME}${OS_VERSION} GuacLive/ffmpeg:$OS_NAME-ffmpeg-vaapi-latest
+    -t guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-vaapi-${OS_NAME}${OS_VERSION} .
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-vaapi-${OS_NAME}${OS_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-vaapi-$OS_VERSION-$FFMPEG_VERSION
+    docker tag guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-vaapi-${OS_NAME}${OS_VERSION} guaclive/ffmpeg:$OS_NAME-ffmpeg-vaapi-latest
 }
 
 main() {
-  if [[ $# == 0 ]]; then
-    echo "Options available: default, default_native, rpi, cuda, vaapi"
-    exit 0
-  else
-    if [[ $1 == "default" ]]; then
-      build_default
-    elif [[ $1 == "default_native" ]]; then
-      build_default_native
-    elif [[ $1 == "rpi" ]]; then
-      build_rpi
-    elif [[ $1 == "cuda" ]]; then
-      build_cuda
-    elif [[ $1 == "vaapi" ]]; then
-      build_vaapi
+    if [[ $# == 0 ]]; then
+        echo "Options available: default, default_native, rpi, cuda, vaapi"
+        exit 0
+    else
+        if [[ $1 == "default" ]]; then
+            build_default
+            elif [[ $1 == "default_native" ]]; then
+            build_default_native
+            elif [[ $1 == "rpi" ]]; then
+            build_rpi
+            elif [[ $1 == "cuda" ]]; then
+            build_cuda
+            elif [[ $1 == "vaapi" ]]; then
+            build_vaapi
+        fi
     fi
-  fi
 }
 
 main $@
