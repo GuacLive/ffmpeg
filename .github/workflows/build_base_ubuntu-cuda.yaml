@@ -68,5 +68,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            guaclive/ffmpeg:${{ env.OS_NAME }}-ffmpeg-cuda-${{ env.OS_VERSION }}-${{ env.FFMPEG_VERSION }}-${{env.CUDA_VERSION}}
-            guaclive/ffmpeg:ffmpeg${{ env.FFMPEG_VERSION }}-cuda-${{ env.OS_NAME }}${{ env.OS_VERSION }}-cuda${{env.CUDA_VERSION}}
+            ghcr.io/guaclive/ffmpeg:${{ env.OS_NAME }}-ffmpeg-cuda-${{ env.OS_VERSION }}-${{ env.FFMPEG_VERSION }}-${{env.CUDA_VERSION}}
+            ghcr.io/guaclive/ffmpeg:ffmpeg${{ env.FFMPEG_VERSION }}-cuda-${{ env.OS_NAME }}${{ env.OS_VERSION }}-cuda${{env.CUDA_VERSION}}

@@ -67,5 +67,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            guaclive/ffmpeg:${{ env.OS_NAME }}-ffmpeg-vaapi-${{ env.OS_VERSION }}-${{ env.FFMPEG_VERSION }}
-            guaclive/ffmpeg:ffmpeg${{ env.FFMPEG_VERSION }}-vaapi-${{ env.OS_NAME }}${{ env.OS_VERSION }}
+            ghcr.io/guaclive/ffmpeg:${{ env.OS_NAME }}-ffmpeg-vaapi-${{ env.OS_VERSION }}-${{ env.FFMPEG_VERSION }}
+            ghcr.io/guaclive/ffmpeg:ffmpeg${{ env.FFMPEG_VERSION }}-vaapi-${{ env.OS_NAME }}${{ env.OS_VERSION }}
