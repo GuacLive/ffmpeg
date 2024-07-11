@@ -10,6 +10,14 @@ jobs:
   docker:
     runs-on: [self-hosted]
     steps:
+      - name: Get current date
+        run: |
+          echo "CURRENT_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
+
+      - name: Get current commit
+        run: |
+          echo "CURRENT_COMMIT=$(echo ${GITHUB_SHA} | head -c 7)" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -44,6 +52,8 @@ jobs:
           file: ./Dockerfile.ubuntu.cuda
           build-args: |
             BUILD_IMAGE=nvidia/cuda:${{ env.CUDA_VERSION }}-devel-${{ env.OS_NAME }}${{ env.OS_VERSION }}
+            BUILD_DATE=${{ env.CURRENT_DATE }}
+            BUILD_COMMIT=${{ env.CURRENT_COMMIT }}
             DEPLOY_IMAGE=nvidia/cuda:${{ env.CUDA_VERSION }}-runtime-${{ env.OS_NAME }}${{ env.OS_VERSION }}
             FFNVCODEC_VERSION=${{ env.FFNVCODEC_VERSION }}
             FREETYPE_VERSION=${{ env.FREETYPE_VERSION }}

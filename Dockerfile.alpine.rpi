@@ -2,29 +2,12 @@ ARG BUILD_IMAGE=alpine:3.15
 
 FROM $BUILD_IMAGE as builder
 
-ARG RPI_VERSION=0.20200813-r0
-
-ARG FREETYPE_VERSION=0
-ARG XML2_VERSION=0
-ARG SRT_VERSION=0
-ARG X264_VERSION=0
-ARG X265_VERSION=0
-ARG VPX_VERSION=0
-ARG LAME_VERSION=0
-ARG OPUS_VERSION=0
-ARG VORBIS_VERSION=0
-ARG DAV1D_VERSION=0
-ARG RAV1E_VERSION=0
-ARG FBDEV_VERSION=0
-ARG ALSA_VERSION=0
-ARG V4L_VERSION=0
-ARG FFMPEG_VERSION=0
+ARG BUILD_DATE=1970-01-01T00:00:00Z
+ARG BUILD_COMMIT=unknown
+ARG FFMPEG_VERSION=none
 
 ENV PKG_CONFIG_PATH=/usr/lib/pkgconfig \
   SRC=/usr
-
-RUN echo "@edgecommunity https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-  echo "@edgemain https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
 
 # install build packages
 RUN apk add -U \
@@ -50,25 +33,23 @@ RUN apk add -U \
   openssl-dev \
   patch \
   tar \
-  zlib-dev
-
-# install shared ffmpeg libs
-RUN apk add \
-  raspberrypi-dev=${RPI_VERSION} \
-  raspberrypi-libs=${RPI_VERSION} \
-  libxml2-dev=${XML2_VERSION} \
-  freetype-dev=${FREETYPE_VERSION} \
-  libsrt-dev=${SRT_VERSION} \
-  x264-dev=${X264_VERSION} \
-  x265-dev=${X265_VERSION} \
-  libvpx-dev=${VPX_VERSION} \
-  lame-dev=${LAME_VERSION} \
-  opus-dev=${OPUS_VERSION} \
-  dav1d-dev@edgemain=${DAV1D_VERSION} \
-  rav1e-dev@edgecommunity=${RAV1E_VERSION} \
-  libvorbis-dev=${VORBIS_VERSION} \
-  alsa-lib-dev=${ALSA_VERSION} \
-  v4l-utils-dev=${V4L_VERSION}
+  zlib-dev \
+  harfbuzz-dev \
+  freetype-dev \
+  libxml2-dev \
+  libsrt-dev \
+  x264-dev \
+  x265-dev \
+  libvpx-dev \
+  lame-dev \
+  opus-dev \
+  libvorbis-dev \
+  dav1d-dev \
+  rav1e-dev \
+  alsa-lib-dev \
+  v4l-utils-dev \
+  raspberrypi-dev \
+  raspberrypi-libs
 
 # install and patch ffmpeg
 RUN mkdir -p /dist && cd /dist && \
@@ -87,7 +68,7 @@ RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   patch -p1 < /contrib/ffmpeg-hls.patch && \
   patch -p1 < /contrib/ffmpeg-mmal.patch && \
   ./configure \
-  --extra-version=datarhei \
+  --extra-version="datarhei-${BUILD_COMMIT}-${BUILD_DATE}" \
   --prefix="${SRC}" \
   --extra-libs="-lpthread -lxml2 -lm -lsupc++ -lstdc++ -lssl -lcrypto -lz -lc -ldl" \
   --enable-nonfree \
@@ -120,54 +101,21 @@ RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   make install
 
 # export shared ffmpeg libs
-
 RUN mkdir -p /ffmpeg/lib && \
-  cp \
-  /usr/lib/libfreetype.so.6 \
-  /usr/lib/libxml2.so.2 \
-  /usr/lib/libsrt.so.1.5 \
-  /usr/lib/liblzma.so.5 \
-  /usr/lib/libmp3lame.so.0 \
-  /usr/lib/libx264.so.164 \
-  /usr/lib/libx265.so.199 \
-  /usr/lib/libcurl.so.4 \
-  /usr/lib/libgcc_s.so.1 \
-  /usr/lib/libbz2.so.1 \
-  /usr/lib/libpng16.so.16 \
-  /usr/lib/libbrotlidec.so.1 \
-  /usr/lib/libstdc++.so.6 \
-  /usr/lib/libnuma.so.1 \
-  /usr/lib/libcares.so.2 \
-  /usr/lib/libnghttp2.so.14 \
-  /usr/lib/libidn2.so.0 \
-  /usr/lib/libbrotlicommon.so.1 \
-  /usr/lib/libunistring.so.5 \
-  /usr/lib/libvpx.so.8 \
-  /usr/lib/libopus.so.0 \
-  /usr/lib/libvorbis.so.0 \
-  /usr/lib/libvorbisenc.so.2 \
-  /usr/lib/libogg.so.0 \
-  /usr/lib/libdav1d.so.7 \
-  /usr/lib/librav1e.so.0.7 \
-  /usr/lib/libogg.so.0 \
-  /ffmpeg/lib
+  ldd /usr/bin/ffmpeg | grep -o -e '/usr/lib/[^ ]*' | xargs -I % cp -v % /ffmpeg/lib
 
 FROM $BUILD_IMAGE as final
 
 COPY --from=builder /usr/bin/ffmpeg /usr/bin/ffmpeg
 COPY --from=builder /ffmpeg/lib/* /usr/lib/
 
-ARG FBDEV_VERSION=0.5.0-r3
-ARG V4L_VERSION=1.22.1-r1
-ARG RPI_VERSION=0.20200813-r0
-
 RUN apk add --no-cache \
   ca-certificates \
   tzdata \
   alsa-lib \
-  xf86-video-fbdev=${FBDEV_VERSION} \
-  v4l-utils=${V4L_VERSION} \
-  raspberrypi-userland=${RPI_VERSION} && \
+  xf86-video-fbdev \
+  v4l-utils \
+  raspberrypi-userland && \
   echo "/opt/vc/lib:/usr/local/lib:/usr/lib:/lib" > /etc/ld-musl-armhf.path && \
   ffmpeg -buildconf
 

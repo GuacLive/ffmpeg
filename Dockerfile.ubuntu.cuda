@@ -3,6 +3,9 @@ ARG DEPLOY_IMAGE=nvidia/cuda:11.4.2-runtime-ubuntu20.04
 
 FROM $BUILD_IMAGE as builder
 
+ARG BUILD_DATE=1970-01-01T00:00:00Z
+ARG BUILD_COMMIT=unknown
+
 ARG FFNVCODEC_VERSION=11.1.5.1
 
 ARG FREETYPE_VERSION=2.10.4
@@ -198,7 +201,7 @@ RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   patch -p1 < /contrib/ffmpeg-jsonstats.patch && \
   patch -p1 < /contrib/ffmpeg-hls.patch && \
   ./configure \
-  --extra-version=datahrei \
+  --extra-version="datarhei-${BUILD_COMMIT}-${BUILD_DATE}" \
   --prefix="${SRC}" \
   --extra-cflags=-I/usr/local/cuda/include \
   --extra-ldflags=-L/usr/local/cuda/lib64 \

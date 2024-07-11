@@ -10,6 +10,14 @@ jobs:
   docker:
     runs-on: [self-hosted]
     steps:
+      - name: Get current date
+        run: |
+          echo "CURRENT_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
+
+      - name: Get current commit
+        run: |
+          echo "CURRENT_COMMIT=$(echo ${GITHUB_SHA} | head -c 7)" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -44,20 +52,8 @@ jobs:
           file: ./Dockerfile.alpine
           build-args: |
             BUILD_IMAGE=${{ env.OS_NAME }}:${{ env.OS_VERSION }}
-            FREETYPE_VERSION=${{ env.FREETYPE_VERSION }}
-            XML2_VERSION=${{ env.XML2_VERSION }}
-            SRT_VERSION=${{ env.SRT_VERSION }}
-            X264_VERSION=${{ env.X264_VERSION }}
-            X265_VERSION=${{ env.X265_VERSION }}
-            VPX_VERSION=${{ env.VPX_VERSION }}
-            LAME_VERSION=${{ env.LAME_VERSION }}
-            OPUS_VERSION=${{ env.OPUS_VERSION }}
-            VORBIS_VERSION=${{ env.VORBIS_VERSION }}
-            DAV1D_VERSION=${{ env.DAV1D_VERSION }}
-            RAV1E_VERSION=${{ env.RAV1E_VERSION }}
-            ALSA_VERSION=${{ env.ALSA_VERSION }}
-            V4L_VERSION=${{ env.V4L_VERSION }}
-            FBDEV_VERSION=${{ env.FBDEV_VERSION }}
+            BUILD_DATE=${{ env.CURRENT_DATE }}
+            BUILD_COMMIT=${{ env.CURRENT_COMMIT }}
             FFMPEG_VERSION=${{ env.FFMPEG_VERSION }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
