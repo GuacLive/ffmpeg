@@ -13,20 +13,6 @@ function build_default_native() {
     docker build \
     --progress=plain \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
-    --build-arg FREETYPE_VERSION=$FREETYPE_VERSION \
-    --build-arg XML2_VERSION=$XML2_VERSION \
-    --build-arg SRT_VERSION=$SRT_VERSION \
-    --build-arg X264_VERSION=$X264_VERSION \
-    --build-arg X265_VERSION=$X265_VERSION \
-    --build-arg VPX_VERSION=$VPX_VERSION \
-    --build-arg LAME_VERSION=$LAME_VERSION \
-    --build-arg OPUS_VERSION=$OPUS_VERSION \
-    --build-arg VORBIS_VERSION=$VORBIS_VERSION \
-    --build-arg DAV1D_VERSION=$DAV1D_VERSION \
-    --build-arg RAV1E_VERSION=$RAV1E_VERSION \
-    --build-arg ALSA_VERSION=$ALSA_VERSION \
-    --build-arg V4L_VERSION=$V4L_VERSION \
-    --build-arg FBDEV_VERSION=$FBDEV_VERSION \
     --build-arg FFMPEG_VERSION=$FFMPEG_VERSION \
     -f Dockerfile.alpine \
     -t guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-${OS_NAME}${OS_VERSION} .
@@ -40,21 +26,8 @@ function build_default() {
     # --platform linux/amd64,linux/arm64,linux/arm/v7
     docker buildx build \
     --load \
+    --progress=plain \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
-    --build-arg FREETYPE_VERSION=$FREETYPE_VERSION \
-    --build-arg XML2_VERSION=$XML2_VERSION \
-    --build-arg SRT_VERSION=$SRT_VERSION \
-    --build-arg X264_VERSION=$X264_VERSION \
-    --build-arg X265_VERSION=$X265_VERSION \
-    --build-arg VPX_VERSION=$VPX_VERSION \
-    --build-arg LAME_VERSION=$LAME_VERSION \
-    --build-arg OPUS_VERSION=$OPUS_VERSION \
-    --build-arg VORBIS_VERSION=$VORBIS_VERSION \
-    --build-arg DAV1D_VERSION=$DAV1D_VERSION \
-    --build-arg RAV1E_VERSION=$RAV1E_VERSION \
-    --build-arg ALSA_VERSION=$ALSA_VERSION \
-    --build-arg V4L_VERSION=$V4L_VERSION \
-    --build-arg FBDEV_VERSION=$FBDEV_VERSION \
     --build-arg FFMPEG_VERSION=$FFMPEG_VERSION \
     --platform linux/amd64 \
     -f Dockerfile.alpine \
@@ -71,23 +44,9 @@ function build_rpi() {
     # --platform linux/arm64,linux/arm/v7
     docker buildx build \
     --load \
+    --progress=plain \
     --build-arg BUILD_IMAGE=$OS_NAME:$OS_VERSION \
-    --build-arg FREETYPE_VERSION=$FREETYPE_VERSION \
-    --build-arg XML2_VERSION=$XML2_VERSION \
-    --build-arg SRT_VERSION=$SRT_VERSION \
-    --build-arg X264_VERSION=$X264_VERSION \
-    --build-arg X265_VERSION=$X265_VERSION \
-    --build-arg VPX_VERSION=$VPX_VERSION \
-    --build-arg LAME_VERSION=$LAME_VERSION \
-    --build-arg OPUS_VERSION=$OPUS_VERSION \
-    --build-arg VORBIS_VERSION=$VORBIS_VERSION \
-    --build-arg DAV1D_VERSION=$DAV1D_VERSION \
-    --build-arg RAV1E_VERSION=$RAV1E_VERSION \
     --build-arg FFMPEG_VERSION=$FFMPEG_VERSION \
-    --build-arg RPI_VERSION=$RPI_VERSION \
-    --build-arg ALSA_VERSION=$ALSA_VERSION \
-    --build-arg V4L_VERSION=$V4L_VERSION \
-    --build-arg FBDEV_VERSION=$FBDEV_VERSION \
     --platform linux/arm64 \
     -f Dockerfile.alpine.rpi \
     -t guaclive/ffmpeg:ffmpeg${FFMPEG_VERSION}-rpi-${OS_NAME}${OS_VERSION} .

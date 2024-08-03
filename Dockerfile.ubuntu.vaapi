@@ -1,7 +1,10 @@
 ARG BUILD_IMAGE=ubuntu:20.04
 ARG DEPLOY_IMAGE=ubuntu:20.04
 
-FROM $BUILD_IMAGE as builder
+FROM $BUILD_IMAGE AS builder
+
+ARG BUILD_DATE=1970-01-01T00:00:00Z
+ARG BUILD_COMMIT=unknown
 
 ARG FREETYPE_VERSION=2.10.4
 ARG XML2_VERSION=2.9.14
@@ -200,7 +203,7 @@ RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   patch -p1 < /contrib/ffmpeg-hls.patch && \
   patch -p1 < /contrib/ffmpeg-non-standard-hevc-over-flv.patch && \
   ./configure \
-  --extra-version=datahrei \
+  --extra-version="datarhei-${BUILD_COMMIT}-${BUILD_DATE}" \
   --prefix="${SRC}" \
   --enable-nonfree \
   --enable-gpl \
