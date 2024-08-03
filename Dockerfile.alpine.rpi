@@ -66,7 +66,8 @@ RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   apkArch="$(apk --print-arch)" && if [ $apkArch != "aarch64" ]; then OMX_SUPPORT="--enable-omx --enable-omx-rpi"; fi && \
   patch -p1 < /contrib/ffmpeg-jsonstats.patch && \
   patch -p1 < /contrib/ffmpeg-hls.patch && \
-  patch -p1 < /contrib/ffmpeg-non-standard-hevc-over-flv.patch && \
+  patch -p1 < /contrib/ffmpeg-flv-support-hevc-opus.patch && \
+  patch -p1 < /contrib/0027-avformat-mpegts-index-only-keyframes-to-ensure-accur.patch && \
   ./configure \
   --extra-version="datarhei-${BUILD_COMMIT}-${BUILD_DATE}" \
   --prefix="${SRC}" \
