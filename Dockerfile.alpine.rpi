@@ -66,8 +66,23 @@ RUN cd /dist/ffmpeg-${FFMPEG_VERSION} && \
   apkArch="$(apk --print-arch)" && if [ $apkArch != "aarch64" ]; then OMX_SUPPORT="--enable-omx --enable-omx-rpi"; fi && \
   patch -p1 < /contrib/ffmpeg-jsonstats.patch && \
   patch -p1 < /contrib/ffmpeg-hls.patch && \
-  patch -p1 < /contrib/ffmpeg-flv-support-hevc-opus.patch && \
   patch -p1 < /contrib/0027-avformat-mpegts-index-only-keyframes-to-ensure-accur.patch && \
+  patch -p1 < /contrib/0031-pass-dovi-sidedata-to-hlsenc-and-mpegtsenc.patch && \
+  patch -p1 < /contrib/0046-fix-libx265-encoded-fmp4-hls-playback-on-safari.patch && \ 
+  patch -p1 < /contrib/0001-add-fixes-for-segment-muxer.patch && \
+  patch -p1 < /contrib/FFmpeg-devel-01-13-avformat-flvenc-Implement-support-for-multi-track-video.diff && \
+  patch -p1 < /contrib/FFmpeg-devel-02-13-avformat-flvdec-Add-support-for-demuxing-multi-track-FLV.diff && \
+  patch -p1 < /contrib/FFmpeg-devel-03-13-avformat-flvenc-add-enhanced-audio-codecs.diff && \
+  patch -p1 < /contrib/FFmpeg-devel-04-13-avformat-flvenc-remove-size-check-for-audio-packets.diff && \
+  patch -p1 < /contrib/FFmpeg-devel-05-13-avformat-flvdec-add-enhanced-audio-codecs.diff  && \
+  patch -p1 < /contrib/FFmpeg-devel-06-13-avformat-flvenc-refactor-fourcc-writing.diff  && \
+  patch -p1 < /contrib/FFmpeg-devel-07-13-avformat-flvenc-write-enhanced-rtmp-multichannel-info-for-audio-with-more-than-two-channels.diff && \
+  patch -p1 < /contrib/FFmpeg-devel-08-13-avformat-flvdec-parse-enhanced-rtmp-multichannel-info.diff  && \
+  patch -p1 < /contrib/FFmpeg-devel-09-13-avformat-flvenc-add-support-for-writing-multi-track-audio.diff && \
+  patch -p1 < /contrib/FFmpeg-devel-10-13-avformat-flvdec-add-support-for-reading-multi-track-audio.diff && \
+  patch -p1 < /contrib/FFmpeg-devel-11-13-avformat-rtmpproto-add-more-enhanced-rtmp-codecs.diff  && \
+  patch -p1 < /contrib/FFmpeg-devel-12-13-avformat-flvdec-stop-shadowing-local-variables.diff  && \
+  patch -p1 < /contrib/FFmpeg-devel-13-13-avformat-flvdec-support-all-multi-track-modes.diff && \
   ./configure \
   --extra-version="datarhei-${BUILD_COMMIT}-${BUILD_DATE}" \
   --prefix="${SRC}" \
